@@ -1,0 +1,115 @@
+bark:
+  autoCopy: 1
+  badge: 1
+  body: ''
+  call: 0
+  copy: ''
+  group: F2下载统计
+  icon: https://f2.wiki/f2-logo-with-shadow.png
+  isArchive: 1
+  key: null
+  level: active
+  mode: get
+  retry: 3
+  ringtones: 1
+  sound: birdsong
+  title: F2
+  token: null
+  url: https://f2.wiki/
+  volume: 5
+douyin:
+  api_mode: cookie
+  cookie: sessionid=689800b77e6c750aae06533651b3cbe3; sessionid_ss=689800b77e6c750aae06533651b3cbe3;
+    sid_tt=689800b77e6c750aae06533651b3cbe3; uid_tt=1ef37b3164f503eafafadd790a96fe2c;
+    uid_tt_ss=1ef37b3164f503eafafadd790a96fe2c; sid_guard=689800b77e6c750aae06533651b3cbe3%7C1780034430%7C5184000%7CTue%2C+28-Jul-2026+06%3A00%3A30+GMT;
+    ttwid=1%7CbwIoVhstVO52aAr7xb8eAon_5lhIW6FwQGcM2RgzhJ0%7C1780034425%7C5ad4690226efa5b2d538dcc67d212779e9b6573f01363cbb5cd6cebd4a951494;
+    passport_csrf_token=2347d2cd985614892d274e8d9bf15cfa; s_v_web_id=verify_move9dsk_5niJR7ha_VSnd_4SFs_81N5_9L8APr042fcJ;
+    odin_tt=8a2a8dfd143b329f610e400644db24adbb1480dde417fab4d11d6b2fae4b218df93b4e67ff14910b4557f6906ea33bc5c13f9e3dcff5138a0204f2f0e97ae73f7c67eabd92cf2777c5e102b95e593a4f;
+    sid_ucp_v1=1.0.0-KDQ2ZWEzNDE0YjdhMzY3ZTk4ZDE4YzRiOTlhYTQwYTgzZTE4Y2I1YjIKHwiUg_KW9AIQ_tbk0AYY7zEgDDC_o-jYBTgFQPsHSAQaAmhsIiA2ODk4MDBiNzdlNmM3NTBhYWUwNjUzMzY1MWIzY2JlMw;
+    ssid_ucp_v1=1.0.0-KDQ2ZWEzNDE0YjdhMzY3ZTk4ZDE4YzRiOTlhYTQwYTgzZTE4Y2I1YjIKHwiUg_KW9AIQ_tbk0AYY7zEgDDC_o-jYBTgFQPsHSAQaAmhsIiA2ODk4MDBiNzdlNmM3NTBhYWUwNjUzMzY1MWIzY2JlMw;
+    session_tlb_tag=sttt%7C5%7CaJgAt35sdQquBlM2UbPL4__________AEHgSn_IKtJE_j_wj-niKRWKOWipUf68jt3KJClq4oRY%3D;
+    biz_trace_id=a5fe85e9; hevc_supported=true; bd_ticket_guard_client_web_domain=2;
+    live_use_vvc=%22false%22; SEARCH_RESULT_LIST_TYPE=%22multi%22; SearchMultiColumnLandingAbVer=2;
+    enter_pc_once=1; xgplayer_user_id=55791632982; UIFID_TEMP=30ff7b230d01f3ed4fd5546706fc508e0725b8a99e0ba4197a991a959864baf0de82f727b6f70e1267f0cf2fc4c65424a0703afd8d0567b8576f20a3589a9053d6c6246aa29e54e30a160b6bd0106c96;
+    fpk1=U2FsdGVkX1+w9Jwav0nObUVQPqvsAqTicxQhXqOE8COTL5SL/1tXsUKhFp0PCFNXsLMTjbYfoTrBtjS0bGp00A==;
+    fpk2=7ceed19ee5ebdbf792f56329591ffc53; theme=%22dark%22; manual_theme=%22dark%22;
+    enter_pc_first_on_day=20251216; xgplayer_device_id=15083627916; __live_version__=%221.1.4.6396%22;
+    n_mh=dvLn-j_FUamR48o_U5dGpuRUbHGScpTW_aXHiESPdvM; is_staff_user=false; login_time=1769776746845;
+    _bd_ticket_crypt_cookie=f416ba1dac5f2a029ca582e1c473ddb8; has_biz_token=false;
+    dy_swidth=1920; dy_sheight=1080; is_dash_user=1; my_rd=2; passport_csrf_token_default=2347d2cd985614892d274e8d9bf15cfa;
+    __security_mc_1_s_sdk_crypt_sdk=60db123d-4c4f-b970; __security_mc_1_s_sdk_cert_key=e86dc32d-4334-88c4;
+    __security_mc_1_s_sdk_sign_data_key_web_protect=332bfa0e-40aa-bf98; PhoneResumeUidCacheV1=%7B%2299905995156%22%3A%7B%22time%22%3A1779857786328%2C%22blockingTime%22%3A1780116991480%2C%22noClick%22%3A0%7D%7D;
+    xg_device_score=7.343081279409702; device_web_cpu_core=16; device_web_memory_size=32;
+    architecture=amd64; is_support_rtm_web_ts=1; strategyABtestKey=%221780034424.11%22;
+    SelfTabRedDotControl=%5B%7B%22id%22%3A%227493830959305852965%22%2C%22u%22%3A60%2C%22c%22%3A0%7D%2C%7B%22id%22%3A%227493560514685962290%22%2C%22u%22%3A71%2C%22c%22%3A0%7D%5D;
+    volume_info=%7B%22isMute%22%3Afalse%2C%22isUserMute%22%3Afalse%2C%22volume%22%3A0.5%7D;
+    __ac_signature=_02B4Z6wo00f016OMBtQAAIDDLcFw4POiFJOjrAJAAIA23a; FOLLOW_LIVE_POINT_INFO=%22MS4wLjABAAAALGSUlyBtanX0ZsWJ3OXOl2c7yfOAzkpFwzvWk2-RRLs%2F1780070400000%2F0%2F0%2F1780061237552%22;
+    FOLLOW_NUMBER_YELLOW_POINT_INFO=%22MS4wLjABAAAALGSUlyBtanX0ZsWJ3OXOl2c7yfOAzkpFwzvWk2-RRLs%2F1780070400000%2F0%2F0%2F1780061837553%22;
+    home_can_add_dy_2_desktop=%221%22; publish_badge_show_info=%221%2C0%2C0%2C1780060642409%22;
+    gulu_source_res=eyJwX2luIjoiMDM5NTkxYTlhNTA5ZWZjZTcyNGNiODBkODlkYjA1MzhiZWI3MTY2MGUxYTI2YWRiY2Q4MjNlYjY3M2Y5NmZjNCJ9;
+    passport_auth_mix_state=y1s620yai6y5xhbvzjceuamv0l8507c4; stream_player_status_params=%22%7B%5C%22is_auto_play%5C%22%3A0%2C%5C%22is_full_screen%5C%22%3A0%2C%5C%22is_full_webscreen%5C%22%3A0%2C%5C%22is_mute%5C%22%3A0%2C%5C%22is_speed%5C%22%3A1%2C%5C%22is_visible%5C%22%3A1%7D%22;
+    IsDouyinActive=true
+  lyric: true
+  max_connections: 5
+  max_counts: 0
+  max_retries: 5
+  max_tasks: 10
+  naming: '{create}_{desc}'
+  page_counts: 20
+  path: Download
+  timeout: 10
+tiktok:
+  cookie: null
+  max_connections: 5
+  max_counts: 0
+  max_retries: 5
+  max_tasks: 5
+  naming: '{create}_{desc}'
+  page_counts: 5
+  path: Download
+  timeout: 10
+twitter:
+  cookie: null
+  folderize: true
+  interval: all
+  max_connections: 5
+  max_counts: 0
+  max_retries: 5
+  max_tasks: 5
+  mode: one
+  naming: '{create}_{desc}'
+  page_counts: 20
+  path: Download
+  timeout: 10
+weibo:
+  cookie: null
+  folderize: true
+  interval: all
+  max_connections: 5
+  max_counts: 0
+  max_retries: 5
+  max_tasks: 5
+  mode: post
+  naming: '{create}_{desc}'
+  page_counts: 20
+  path: Download
+  timeout: 10
+xiaohongshu:
+  api_mode: cookie
+  cookie: a1=19e73e47ffdrrk9fdszxggbiq1uy2ve0jivih27um50000233766; web_session=040069b684a32c6b86bfc7da2c384b3828e061;
+    webId=db647ca576a8614e7dfaaf42b1004e57; webBuild=6.13.3; xsecappid=xhs-pc-web;
+    websectiga=634d3ad75ffb42a2ade2c5e1705a73c845837578aeb31ba0e442d75c648da36a; ets=1780060815282;
+    abRequestId=dbed4c5f-34f7-5d48-9e14-212ed4437bae; sec_poison_id=0fd1e18e-8981-40ce-a3da-949180326660;
+    x-rednote-datactry=CN; x-rednote-holderctry=CN; loadts=1780063019577; gid=yjdWqd4jjqV0yjdWqd4Wi3JWifFFTjifMuCkh76kD3Ay7328vJhd8x888JqqWKK8W8fYWq8D;
+    id_token=VjEAAEfyO78gSvW1amzMFRqnPU3z7W5xnNkKyDs2Eqa4mXKYo4Tph4N4lGDo5e0B33cEgkZ33mwvnWBwS1R+j3cimNUu68NKJcuFN2bQRsaoPmGosnsz0I2niqZD4kpc5HL1LBLx;
+    acw_tc=0a00ded117800630185191738eb669bf15c19f0ac8d3cd1ce03c10788c7efb
+  cover: true
+  desc: true
+  max_connections: 5
+  max_counts: 0
+  max_retries: 5
+  max_tasks: 10
+  naming: '{create}_{title}'
+  page_counts: 20
+  path: Download
+  timeout: 10

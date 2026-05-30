@@ -1,0 +1,221 @@
+<view class="page-container">
+  <!-- 用户信息卡片 -->
+  <view class="user-section fade-in-up">
+    <view class="user-card">
+      <view class="user-avatar" bindtap="changeAvatar">
+        <image class="avatar-image" src="{{userInfo.avatar || defaultAvatar}}" mode="aspectFill" />
+        <view class="avatar-badge">
+          <text class="badge-icon">✓</text>
+        </view>
+      </view>
+      <view class="user-info">
+        <text class="user-name">{{userInfo.nickName || '点击登录'}}</text>
+        <text class="user-id">ID: {{userInfo.userId || '未登录'}}</text>
+        <view class="user-tags">
+          <text class="tag vip" wx:if="{{userInfo.isVip}}">VIP用户</text>
+          <text class="tag normal" wx:else>普通用户</text>
+        </view>
+      </view>
+      <view class="user-stats">
+        <view class="stat-row">
+          <text class="stat-value">{{userStats.downloads}}</text>
+          <text class="stat-label">下载次数</text>
+        </view>
+        <view class="stat-row">
+          <text class="stat-value">{{userStats.days}}</text>
+          <text class="stat-label">使用天数</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu-section fade-in-up" style="animation-delay: 0.1s">
+    <view class="menu-card">
+      <view class="menu-item" bindtap="goToHistory">
+        <view class="menu-icon-wrapper history">
+          <text class="menu-icon">📋</text>
+        </view>
+        <view class="menu-content">
+          <text class="menu-title">历史记录</text>
+          <text class="menu-desc">{{historyCount}}条记录</text>
+        </view>
+        <view class="menu-arrow">
+          <text class="arrow-icon">›</text>
+        </view>
+      </view>
+
+      <view class="menu-divider"></view>
+
+      <view class="menu-item" bindtap="goToFeedback">
+        <view class="menu-icon-wrapper feedback">
+          <text class="menu-icon">💬</text>
+        </view>
+        <view class="menu-content">
+          <text class="menu-title">意见反馈</text>
+          <text class="menu-desc">有问题？告诉我们</text>
+        </view>
+        <view class="menu-arrow">
+          <text class="arrow-icon">›</text>
+        </view>
+      </view>
+
+      <view class="menu-divider"></view>
+
+      <view class="menu-item" bindtap="goToAbout">
+        <view class="menu-icon-wrapper about">
+          <text class="menu-icon">ℹ️</text>
+        </view>
+        <view class="menu-content">
+          <text class="menu-title">关于我们</text>
+          <text class="menu-desc">版本 {{version}}</text>
+        </view>
+        <view class="menu-arrow">
+          <text class="arrow-icon">›</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 支持平台 -->
+  <view class="platform-section fade-in-up" style="animation-delay: 0.2s">
+    <view class="section-header">
+      <text class="section-title">支持平台</text>
+    </view>
+    <view class="platform-list">
+      <view class="platform-item" wx:for="{{platforms}}" wx:key="key" bindtap="openPlatformSetting" data-platform="{{item.key}}">
+        <view class="platform-icon-wrapper {{item.key}}">
+          <text class="platform-icon">{{item.icon}}</text>
+        </view>
+        <view class="platform-info">
+          <text class="platform-name">{{item.name}}</text>
+          <text class="platform-status">
+            <text wx:if="{{item.key !== 'weibo' && apiConfig[item.key].api_mode === 'tikhub'}}">TikHub模式 ✓</text>
+            <text wx:elif="{{item.key !== 'weibo' && apiConfig[item.key].api_mode === 'cookie'}}">Cookie模式 ✓</text>
+            <text wx:else>已支持 ✓</text>
+          </text>
+        </view>
+        <view class="platform-setting-btn">
+          <text class="setting-btn-text">设置</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 设置弹窗 -->
+  <view class="setting-modal" wx:if="{{showSettingModal}}" bindtap="closeSettingModal">
+    <view class="modal-content" catchtap="stopPropagation">
+      <view class="modal-header">
+        <text class="modal-title">平台设置</text>
+        <text class="modal-close" bindtap="closeSettingModal">×</text>
+      </view>
+      
+      <view class="modal-body">
+        <!-- 模式切换（仅抖音和小红书） -->
+        <view class="setting-group" wx:if="{{currentPlatform !== 'weibo'}}">
+          <text class="setting-label">解析模式</text>
+          <view class="mode-switch">
+            <text class="mode-text {{apiConfig[currentPlatform].api_mode === 'cookie' ? 'active' : ''}}">Cookie</text>
+            <switch checked="{{apiConfig[currentPlatform].api_mode === 'tikhub'}}" bindchange="switchApiMode" color="#667eea" />
+            <text class="mode-text {{apiConfig[currentPlatform].api_mode === 'tikhub' ? 'active' : ''}}">TikHub</text>
+          </view>
+        </view>
+
+        <!-- TikHub API Key -->
+        <view class="setting-group" wx:if="{{currentPlatform !== 'weibo' && apiConfig[currentPlatform].api_mode === 'tikhub'}}">
+          <text class="setting-label">TikHub API Key</text>
+          <view class="input-row">
+            <input class="setting-input" placeholder="请输入API Key" value="{{tempApiKey}}" bindinput="onApiKeyInput" />
+            <button class="save-btn" bindtap="saveApiKey">保存</button>
+          </view>
+          <text class="status-text {{apiConfig[currentPlatform].has_api_key ? 'success' : 'warning'}}">
+            {{apiConfig[currentPlatform].has_api_key ? '✓ 已配置' : '⚠ 未配置'}}
+          </text>
+        </view>
+
+        <!-- Cookie -->
+        <view class="setting-group" wx:if="{{currentPlatform === 'weibo' || apiConfig[currentPlatform].api_mode === 'cookie'}}">
+          <text class="setting-label">Cookie</text>
+          <view class="input-row">
+            <input class="setting-input cookie-input" placeholder="请输入Cookie" value="{{tempCookie}}" bindinput="onCookieInput" />
+            <button class="save-btn" bindtap="saveCookie">保存</button>
+          </view>
+          <text class="status-text {{apiConfig[currentPlatform].has_cookie ? 'success' : 'warning'}}">
+            {{apiConfig[currentPlatform].has_cookie ? '✓ 已配置' : '⚠ 未配置（可选）'}}
+          </text>
+          <text class="hint-text">提示：从浏览器登录平台后复制Cookie</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 设置选项 -->
+  <view class="settings-section fade-in-up" style="animation-delay: 0.3s">
+    <view class="section-header">
+      <text class="section-title">设置</text>
+    </view>
+    <view class="settings-card">
+      <view class="setting-item">
+        <view class="setting-left">
+          <text class="setting-icon">🔔</text>
+          <text class="setting-title">消息通知</text>
+        </view>
+        <switch class="setting-switch" checked="{{settings.notification}}" bindchange="toggleNotification" color="#667eea" />
+      </view>
+
+      <view class="setting-divider"></view>
+
+      <view class="setting-item" bindtap="editServerUrl">
+        <view class="setting-left">
+          <text class="setting-icon">🌐</text>
+          <text class="setting-title">服务器地址</text>
+        </view>
+        <view class="setting-right">
+          <text class="cache-size">{{serverUrl}}</text>
+          <text class="arrow-icon">›</text>
+        </view>
+      </view>
+
+      <view class="setting-divider"></view>
+      <view class="setting-item" bindtap="clearCache">
+        <view class="setting-left">
+          <text class="setting-icon">🗑</text>
+          <text class="setting-title">清除缓存</text>
+        </view>
+        <view class="setting-right">
+          <text class="cache-size">{{cacheSize}}</text>
+          <text class="arrow-icon">›</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 常见问题 -->
+  <view class="faq-section fade-in-up" style="animation-delay: 0.4s">
+    <view class="section-header">
+      <text class="section-title">常见问题</text>
+    </view>
+    <view class="faq-list">
+      <view class="faq-item" wx:for="{{faqList}}" wx:key="index" bindtap="toggleFaq" data-index="{{index}}">
+        <view class="faq-question">
+          <text class="faq-icon">{{item.expanded ? '−' : '+'}}</text>
+          <text class="faq-text">{{item.question}}</text>
+        </view>
+        <view class="faq-answer" wx:if="{{item.expanded}}">
+          <text class="answer-text">{{item.answer}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部信息 -->
+  <view class="footer-section fade-in-up" style="animation-delay: 0.5s">
+    <text class="footer-text">免费去水印工具 v{{version}}</text>
+    <text class="footer-text">© 2024 All Rights Reserved</text>
+    <view class="footer-links">
+      <text class="link-item" bindtap="goToPrivacy">隐私政策</text>
+      <text class="link-divider">|</text>
+      <text class="link-item" bindtap="goToTerms">用户协议</text>
+    </view>
+  </view>
+</view>

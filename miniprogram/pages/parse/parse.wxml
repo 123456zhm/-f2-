@@ -1,0 +1,177 @@
+<view class="page-container">
+  <!-- 输入区域 -->
+  <view class="input-section fade-in-up">
+    <view class="section-header">
+      <text class="section-title">粘贴链接</text>
+      <text class="section-desc">支持小红薯、抖海、围脖分享链接</text>
+    </view>
+    
+    <view class="input-wrapper">
+      <textarea 
+        class="link-input"
+        placeholder="请粘贴分享链接..."
+        placeholder-class="input-placeholder"
+        value="{{linkUrl}}"
+        bindinput="onInputChange"
+        auto-height
+        maxlength="500"
+      />
+      <view class="input-actions">
+        <view class="action-btn paste-btn" bindtap="pasteFromClipboard">
+          <text class="btn-icon">📋</text>
+          <text class="btn-text">粘贴</text>
+        </view>
+        <view class="action-btn clear-btn" bindtap="clearInput" wx:if="{{linkUrl}}">
+          <text class="btn-icon">✕</text>
+          <text class="btn-text">清除</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 平台识别 -->
+    <view class="platform-detect" wx:if="{{detectedPlatform}}">
+      <view class="detect-badge {{detectedPlatform.key}}">
+        <text class="detect-icon">{{detectedPlatform.icon}}</text>
+        <text class="detect-name">{{detectedPlatform.name}}</text>
+      </view>
+      <text class="detect-status">✓ 已识别</text>
+    </view>
+
+    <!-- 解析按钮 -->
+    <view class="parse-btn-wrapper">
+      <button class="parse-btn {{isParsing ? 'disabled' : ''}}" bindtap="parseLink">
+        <text class="parse-btn-text" wx:if="{{!isParsing}}">开始解析</text>
+        <view class="parse-loading" wx:else>
+          <text class="loading-icon">⏳</text>
+          <text class="loading-text">解析中...</text>
+        </view>
+      </button>
+    </view>
+  </view>
+
+  <!-- 解析结果 -->
+  <view class="result-section fade-in-up" wx:if="{{parseResult}}" style="animation-delay: 0.1s">
+    <view class="result-header">
+      <text class="result-title">解析结果</text>
+      <view class="result-type {{parseResult.type}}">
+        <text>{{parseResult.type === 'video' ? '视频' : '图文'}}</text>
+      </view>
+    </view>
+
+    <!-- 内容预览 -->
+    <view class="preview-card">
+      <view class="preview-cover" wx:if="{{parseResult.cover && parseResult.cover !== 'null' && parseResult.cover !== 'undefined'}}" bindtap="previewImage" data-url="{{parseResult.cover}}">
+        <image class="cover-image" src="{{parseResult.cover}}" mode="aspectFill" binderror="onCoverImageError" />
+        <view class="play-btn" wx:if="{{parseResult.type === 'video'}}" catchtap="playVideo">
+          <text class="play-icon">▶</text>
+        </view>
+      </view>
+
+      <view class="preview-cover-placeholder" wx:if="{{!parseResult.cover || parseResult.cover === 'null' || parseResult.cover === 'undefined'}}">
+        <text class="placeholder-icon">🎬</text>
+        <text class="placeholder-text">封面加载失败</text>
+      </view>
+      
+      <view class="preview-info">
+        <text class="preview-title">{{parseResult.title || '无标题'}}</text>
+        <text class="preview-desc">{{parseResult.desc || '无描述'}}</text>
+        <view class="preview-meta">
+          <text class="meta-author">@{{parseResult.author}}</text>
+          <text class="meta-time">{{parseResult.time}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 互动数据 -->
+    <view class="stats-card">
+      <view class="stat-item">
+        <text class="stat-icon">❤️</text>
+        <text class="stat-value">{{parseResult.likes}}</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-icon">💬</text>
+        <text class="stat-value">{{parseResult.comments}}</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-icon">🔗</text>
+        <text class="stat-value">{{parseResult.shares}}</text>
+      </view>
+    </view>
+
+    <!-- 图片列表 -->
+    <view class="images-section" wx:if="{{parseResult.images && parseResult.images.length > 0}}">
+      <text class="images-title">图片列表 ({{parseResult.images.length}}张)</text>
+      <view class="images-grid">
+        <view class="image-item" wx:for="{{parseResult.images}}" wx:key="index" bindtap="previewImage" data-url="{{item}}">
+          <image class="image-thumb" src="{{item}}" mode="aspectFill" />
+          <view class="image-index">{{index + 1}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 下载按钮 -->
+    <view class="download-actions">
+      <button class="download-btn primary" bindtap="downloadAll">
+        <text class="btn-icon">⬇</text>
+        <text class="btn-text">全部下载</text>
+      </button>
+      <button class="download-btn secondary" bindtap="downloadSingle" wx:if="{{parseResult.type === 'video'}}">
+        <text class="btn-icon">🎬</text>
+        <text class="btn-text">下载视频</text>
+      </button>
+    </view>
+  </view>
+
+  <!-- 错误提示 -->
+  <view class="error-section fade-in-up" wx:if="{{errorMsg}}" style="animation-delay: 0.1s">
+    <view class="error-card">
+      <text class="error-icon">⚠️</text>
+      <text class="error-text">{{errorMsg}}</text>
+      <view class="error-tips">
+        <text class="tips-title">可能的原因：</text>
+        <text class="tips-item" wx:for="{{errorTips}}" wx:key="index">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 最近解析 -->
+  <view class="recent-section fade-in-up" wx:if="{{recentLinks.length > 0}}" style="animation-delay: 0.2s">
+    <text class="recent-title">最近解析</text>
+    <view class="recent-list">
+      <view class="recent-item" wx:for="{{recentLinks}}" wx:key="id" bindtap="useRecentLink" data-link="{{item.url}}">
+        <view class="recent-platform {{item.platform}}">
+          <text class="platform-icon">{{item.icon}}</text>
+        </view>
+        <view class="recent-info">
+          <text class="recent-url">{{item.url}}</text>
+          <text class="recent-time">{{item.time}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 视频播放器 -->
+  <view class="video-player-overlay" wx:if="{{showVideoPlayer}}" bindtap="closeVideoPlayer">
+    <view class="video-player-container" catchtap="stopPropagation">
+      <view class="video-player-header">
+        <text class="video-player-title">{{currentVideoTitle}}</text>
+        <view class="video-player-close" bindtap="closeVideoPlayer">
+          <text>✕</text>
+        </view>
+      </view>
+      <video
+        class="video-player"
+        src="{{currentVideoUrl}}"
+        controls
+        autoplay
+        show-center-play-btn
+        show-fullscreen-btn
+        show-playbtn
+        enable-progress-gesture
+        binderror="onVideoError"
+        bindended="onVideoEnded"
+      >
+      </video>
+    </view>
+  </view>
+</view>

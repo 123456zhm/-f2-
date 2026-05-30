@@ -1,0 +1,101 @@
+<view class="page-container">
+  <!-- Hero区域 -->
+  <view class="hero-section fade-in-up">
+    <view class="hero-bg"></view>
+    <view class="hero-content">
+      <view class="hero-title">
+        <text class="title-main">免费去水印</text>
+        <text class="title-sub">一键解析 · 无水印下载</text>
+      </view>
+      <view class="hero-tags">
+        <text class="tag tag-free">完全免费</text>
+        <text class="tag tag-hot">热门推荐</text>
+      </view>
+      <view class="hero-stats">
+        <view class="stat-item">
+          <text class="stat-num">{{stats.totalDownloads}}</text>
+          <text class="stat-label">累计下载</text>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-item">
+          <text class="stat-num">{{stats.todayDownloads}}</text>
+          <text class="stat-label">今日下载</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 支持平台 -->
+  <view class="platform-section fade-in-up" style="animation-delay: 0.1s">
+    <view class="section-header">
+      <text class="section-title">支持平台</text>
+      <text class="section-desc">覆盖主流短视频平台</text>
+    </view>
+    <view class="platform-grid">
+      <view class="platform-card {{item.key}}" wx:for="{{platforms}}" wx:key="key" bindtap="selectPlatform" data-platform="{{item}}">
+        <view class="platform-icon">{{item.icon}}</view>
+        <view class="platform-name">{{item.name}}</view>
+        <view class="platform-badge">已支持</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能入口 -->
+  <view class="action-section fade-in-up" style="animation-delay: 0.2s">
+    <view class="action-card main-action" bindtap="goToParse">
+      <view class="action-icon-wrapper gradient-primary">
+        <text class="action-icon">🔗</text>
+      </view>
+      <view class="action-content">
+        <text class="action-title">粘贴链接解析</text>
+        <text class="action-desc">复制分享链接，一键去水印下载</text>
+      </view>
+      <view class="action-arrow">
+        <text class="arrow-icon">→</text>
+      </view>
+    </view>
+
+    <view class="action-row">
+      <view class="action-card mini-action" bindtap="goToHistory">
+        <view class="action-icon-wrapper" style="background: linear-gradient(135deg, #00c853 0%, #69f0ae 100%)">
+          <text class="action-icon">📋</text>
+        </view>
+        <view class="action-content">
+          <text class="action-title">历史记录</text>
+          <text class="action-desc">{{historyCount}}条记录</text>
+        </view>
+      </view>
+      <view class="action-card mini-action" bindtap="goToProfile">
+        <view class="action-icon-wrapper" style="background: linear-gradient(135deg, #ff9800 0%, #ffc107 100%)">
+          <text class="action-icon">👤</text>
+        </view>
+        <view class="action-content">
+          <text class="action-title">个人中心</text>
+          <text class="action-desc">设置与帮助</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 使用教程 -->
+  <view class="tutorial-section fade-in-up" style="animation-delay: 0.3s">
+    <view class="section-header">
+      <text class="section-title">使用教程</text>
+    </view>
+    <view class="tutorial-steps">
+      <view class="tutorial-step" wx:for="{{tutorialSteps}}" wx:key="index">
+        <view class="step-number">{{index + 1}}</view>
+        <view class="step-content">
+          <text class="step-title">{{item.title}}</text>
+          <text class="step-desc">{{item.desc}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部提示 -->
+  <view class="footer-section fade-in-up" style="animation-delay: 0.4s">
+    <text class="footer-text">本工具仅供个人学习使用，请勿用于商业用途</text>
+    <text class="footer-text">尊重原创，请勿侵犯他人版权</text>
+  </view>
+</view>

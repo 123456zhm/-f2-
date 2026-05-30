@@ -1,0 +1,177 @@
+<view class="page-container">
+  <!-- 统计卡片 -->
+  <view class="stats-section fade-in-up">
+    <view class="stats-card">
+      <view class="stat-item">
+        <text class="stat-number">{{totalCount}}</text>
+        <text class="stat-label">总下载</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-number">{{todayCount}}</text>
+        <text class="stat-label">今日下载</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-number">{{videoCount}}</text>
+        <text class="stat-label">视频数</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 历史列表 -->
+  <view class="history-section" wx:if="{{historyList.length > 0}}">
+    <view class="history-list">
+      <view class="history-item fade-in-up" wx:for="{{historyList}}" wx:key="id" style="animation-delay: {{index * 0.05}}s">
+        <view class="item-cover" bindtap="viewDetail" data-item="{{item}}">
+          <image class="cover-image" src="{{item.cover}}" mode="aspectFill" />
+          <view class="cover-badge {{item.platformKey || 'xiaohongshu'}}">
+            <text class="badge-icon">{{item.platformIcon}}</text>
+          </view>
+          <view class="type-badge {{item.type}}">
+            <text>{{item.type === 'video' ? '🎬' : '📷'}}</text>
+          </view>
+        </view>
+        
+        <view class="item-content" bindtap="viewDetail" data-item="{{item}}">
+          <text class="item-title">{{item.title}}</text>
+          <text class="item-author">@{{item.author}}</text>
+          <view class="item-meta">
+            <text class="meta-time">{{item.time}}</text>
+            <text class="meta-files">{{item.fileCount || (item.images ? item.images.length : 0) + (item.videoUrl ? 1 : 0)}}个文件</text>
+          </view>
+        </view>
+
+        <view class="item-actions">
+          <view class="action-btn download-btn" bindtap="reDownload" data-item="{{item}}">
+            <text class="btn-icon">⬇</text>
+          </view>
+          <view class="action-btn delete-btn" bindtap="deleteItem" data-id="{{item.id}}">
+            <text class="btn-icon">🗑</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-section fade-in-up" wx:if="{{historyList.length === 0}}" style="animation-delay: 0.2s">
+    <view class="empty-card">
+      <text class="empty-icon">📋</text>
+      <text class="empty-title">暂无历史记录</text>
+      <text class="empty-desc">快去首页解析下载吧~</text>
+      <button class="empty-btn" bindtap="goToParse">开始解析</button>
+    </view>
+  </view>
+
+  <!-- 底部操作 -->
+  <view class="bottom-section fade-in-up" wx:if="{{historyList.length > 0}}" style="animation-delay: 0.3s">
+    <view class="bottom-actions">
+      <button class="action-btn clear-btn full-width" bindtap="clearAllHistory">
+        <text class="btn-icon">🗑</text>
+        <text class="btn-text">清空历史</text>
+      </button>
+    </view>
+  </view>
+
+  <!-- 详情弹窗 -->
+  <view class="detail-overlay" wx:if="{{showDetail}}" bindtap="closeDetail">
+    <view class="detail-container" catchtap="stopPropagation">
+      <!-- 详情头部 -->
+      <view class="detail-header">
+        <text class="detail-title">{{currentDetail.title || '无标题'}}</text>
+        <view class="detail-close" bindtap="closeDetail">
+          <text>✕</text>
+        </view>
+      </view>
+
+      <!-- 封面/视频预览 -->
+      <view class="detail-cover-section">
+        <view class="detail-cover" wx:if="{{currentDetail.cover && currentDetail.cover !== 'null' && currentDetail.cover !== 'undefined'}}">
+          <image class="cover-image" src="{{currentDetail.cover}}" mode="aspectFill" />
+          <view class="play-btn-overlay" wx:if="{{currentDetail.type === 'video' && currentDetail.videoUrl}}" catchtap="playVideo">
+            <text class="play-icon">▶</text>
+          </view>
+        </view>
+        <view class="cover-placeholder" wx:else>
+          <text class="placeholder-text">暂无封面</text>
+        </view>
+      </view>
+
+      <!-- 信息卡片 -->
+      <view class="detail-info-card">
+        <view class="info-row">
+          <text class="info-label">作者</text>
+          <text class="info-value">@{{currentDetail.author || '未知'}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">类型</text>
+          <view class="type-tag {{currentDetail.type}}">
+            <text>{{currentDetail.type === 'video' ? '视频' : '图文'}}</text>
+          </view>
+        </view>
+        <view class="info-row">
+          <text class="info-label">时间</text>
+          <text class="info-value">{{currentDetail.time}}</text>
+        </view>
+        <view class="info-row" wx:if="{{currentDetail.likes || currentDetail.comments || currentDetail.shares}}">
+          <text class="info-label">互动</text>
+          <view class="stats-inline">
+            <text class="stat-item-inline" wx:if="{{currentDetail.likes}}">❤️ {{currentDetail.likes}}</text>
+            <text class="stat-item-inline" wx:if="{{currentDetail.comments}}">💬 {{currentDetail.comments}}</text>
+            <text class="stat-item-inline" wx:if="{{currentDetail.shares}}">🔗 {{currentDetail.shares}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 图片列表 -->
+      <view class="detail-images-section" wx:if="{{currentDetail.images && currentDetail.images.length > 0}}">
+        <text class="section-label">图片列表 ({{currentDetail.images.length}}张)</text>
+        <view class="images-grid-detail">
+          <view class="image-item-detail" wx:for="{{currentDetail.images}}" wx:key="index" bindtap="previewImage" data-url="{{item}}" data-images="{{currentDetail.images}}">
+            <image class="image-thumb-detail" src="{{item}}" mode="aspectFill" />
+            <view class="image-index-badge">{{index + 1}}</view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="detail-actions">
+        <button class="action-button primary-btn" bindtap="downloadFromDetail" wx:if="{{currentDetail.type === 'video' && currentDetail.videoUrl}}">
+          <text>⬇ 下载视频</text>
+        </button>
+        <button class="action-button primary-btn" bindtap="downloadImagesFromDetail" wx:if="{{currentDetail.images && currentDetail.images.length > 0}}">
+          <text>⬇ 下载图片 ({{currentDetail.images.length}}张)</text>
+        </button>
+        <button class="action-button secondary-btn" bindtap="reParse" wx:if="{{currentDetail.url}}">
+          <text>🔄 重新解析</text>
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 视频播放器 -->
+  <view class="video-player-overlay" wx:if="{{showVideoPlayer}}" bindtap="closeVideoPlayer">
+    <view class="video-player-container" catchtap="stopPropagation">
+      <view class="video-player-header">
+        <text class="video-player-title">{{currentVideoTitle}}</text>
+        <view class="video-player-close" bindtap="closeVideoPlayer">
+          <text>✕</text>
+        </view>
+      </view>
+      <video
+        class="video-player"
+        src="{{currentVideoUrl}}"
+        controls
+        autoplay
+        show-center-play-btn
+        show-fullscreen-btn
+        show-playbtn
+        enable-progress-gesture
+        binderror="onVideoError"
+        bindended="onVideoEnded"
+      >
+      </video>
+    </view>
+  </view>
+</view>
